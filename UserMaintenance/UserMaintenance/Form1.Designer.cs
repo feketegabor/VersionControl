@@ -32,6 +32,7 @@
             this.txtFullName = new System.Windows.Forms.TextBox();
             this.lblFullName = new System.Windows.Forms.Label();
             this.btnAdd = new System.Windows.Forms.Button();
+            this.btnWriteToFile = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // listUsers
@@ -44,9 +45,9 @@
             // 
             // txtFullName
             // 
-            this.txtFullName.Location = new System.Drawing.Point(251, 11);
+            this.txtFullName.Location = new System.Drawing.Point(306, 11);
             this.txtFullName.Name = "txtFullName";
-            this.txtFullName.Size = new System.Drawing.Size(177, 20);
+            this.txtFullName.Size = new System.Drawing.Size(210, 20);
             this.txtFullName.TabIndex = 1;
             // 
             // lblFullName
@@ -62,17 +63,28 @@
             // 
             this.btnAdd.Location = new System.Drawing.Point(213, 63);
             this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(215, 45);
+            this.btnAdd.Size = new System.Drawing.Size(303, 45);
             this.btnAdd.TabIndex = 5;
             this.btnAdd.Text = "button1";
             this.btnAdd.UseVisualStyleBackColor = true;
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
+            // btnWriteToFile
+            // 
+            this.btnWriteToFile.Location = new System.Drawing.Point(213, 124);
+            this.btnWriteToFile.Name = "btnWriteToFile";
+            this.btnWriteToFile.Size = new System.Drawing.Size(303, 47);
+            this.btnWriteToFile.TabIndex = 6;
+            this.btnWriteToFile.Text = "button1";
+            this.btnWriteToFile.UseVisualStyleBackColor = true;
+            this.btnWriteToFile.Click += new System.EventHandler(this.button1_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(436, 286);
+            this.ClientSize = new System.Drawing.Size(528, 283);
+            this.Controls.Add(this.btnWriteToFile);
             this.Controls.Add(this.btnAdd);
             this.Controls.Add(this.lblFullName);
             this.Controls.Add(this.txtFullName);
@@ -90,6 +102,7 @@
         private System.Windows.Forms.TextBox txtFullName;
         private System.Windows.Forms.Label lblFullName;
         private System.Windows.Forms.Button btnAdd;
+        private System.Windows.Forms.Button btnWriteToFile;
     }
 }
 
