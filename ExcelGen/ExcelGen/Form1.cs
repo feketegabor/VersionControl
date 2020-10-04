@@ -14,6 +14,7 @@ using System.Data.Entity.Core.Metadata.Edm;
 using System.Runtime.Remoting.Messaging;
 using System.Diagnostics;
 
+
 namespace ExcelGen
 {
     public partial class Form1 : Form
@@ -25,13 +26,13 @@ namespace ExcelGen
         Excel.Workbook xlWB;
         Excel.Worksheet xlSheet;
 
-
-
         public Form1()
         {
             InitializeComponent();
             LoadData();
             CreateExcel();
+            this.WindowState = FormWindowState.Minimized; //ne látszódjon a Form
+            this.ShowInTaskbar = false;
         }
         private void LoadData()
         {
@@ -85,9 +86,9 @@ namespace ExcelGen
                 "Kerület",
                 "Lift",
                 "Szobák száma",
-                "Alapterület (m2)",
+                "Alapterület (m\u00b2)",
                 "Ár (mFt)",
-                "Négyzetméter ár (Ft/m2)"
+                "Négyzetméter ár (Ft/m\u00b2)"
             };
             for (int i = 0; i < headers.Length; i++)
             {
@@ -112,14 +113,14 @@ namespace ExcelGen
                 GetCell(2, 1),
                 GetCell(1 + values.GetLength(0), values.GetLength(1))).Value2 = values;
 
-            string[] pricePerSqmeter = new string[values.GetLength(0)];
-            for (int row = 0; row < values.GetLength(0); row++)
-            {
-                pricePerSqmeter[row] = string.Format("={0}/{1}", values[row, 7], values[row, 6]);
-            };
-            xlSheet.get_Range(
-                GetCell(2, 9),
-                GetCell(1 + values.GetLength(0), 9)).Value2 = pricePerSqmeter;
+            //string[,] pricePerSqmeter = new string[values.GetLength(0), 1];
+            //for (int row = 0; row < values.GetLength(0); row++)
+            //{
+            //    pricePerSqmeter[row, 0] = string.Format("={0}/{1}", GetCell(2 + row, 8), GetCell(2 + row, 7));
+            //};
+            //xlSheet.get_Range(
+            //    GetCell(2, 9),
+            //    GetCell(1 + values.GetLength(0), 9)).Value2 = pricePerSqmeter;
 
             //Formatting
             Excel.Range headerRange = xlSheet.get_Range(GetCell(1, 1), GetCell(1, headers.Length));
@@ -131,16 +132,19 @@ namespace ExcelGen
             headerRange.Interior.Color = Color.LightBlue;
             headerRange.BorderAround2(Excel.XlLineStyle.xlContinuous, Excel.XlBorderWeight.xlThick);
 
-            Excel.Range tableRange = xlSheet.get_Range(GetCell(1, 1), GetCell(values.GetLength(0), values.GetLength(1)));
+            Excel.Range tableRange = xlSheet.get_Range(GetCell(1, 1), GetCell(1 + values.GetLength(0), values.GetLength(1)));
             tableRange.BorderAround2(Excel.XlLineStyle.xlContinuous, Excel.XlBorderWeight.xlThick);
 
-            Excel.Range firstColumn = xlSheet.get_Range(GetCell(1, 1), GetCell(values.GetLength(0), 1));
+            Excel.Range firstColumn = xlSheet.get_Range(GetCell(1, 1), GetCell(1 + values.GetLength(0), 1));
             firstColumn.Font.Bold = true;
             firstColumn.Interior.Color = Color.LightYellow;
 
-            Excel.Range lastColumn = xlSheet.get_Range(GetCell(1, values.GetLength(1)), GetCell(values.GetLength(0), values.GetLength(1)));
+            Excel.Range lastColumn = xlSheet.get_Range(GetCell(1, values.GetLength(1)), GetCell(1 + values.GetLength(0), values.GetLength(1)));
             lastColumn.Interior.Color = Color.LightGreen;
             lastColumn.NumberFormat = "0.00";
+
+            Excel.Range lastColumnValues = xlSheet.get_Range(GetCell(2, values.GetLength(1)), GetCell(1 + values.GetLength(0), values.GetLength(1)));
+            lastColumnValues.FormulaR1C1 = "=RC[-1]/RC[-2]"; //Excelben makróval találtam ezt a megoldást a string tömb bemásolása helyett, amit ezért kikommenteltem
         }
     }
 }
