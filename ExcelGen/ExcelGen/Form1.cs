@@ -44,7 +44,7 @@ namespace ExcelGen
                 xlApp = new Excel.Application();
                 xlWB = xlApp.Workbooks.Add(Missing.Value);
                 xlSheet = xlWB.ActiveSheet;
-                //CreateTable();
+                CreateTable();
                 xlApp.Visible = true;
                 xlApp.UserControl = true;
             }
@@ -112,16 +112,35 @@ namespace ExcelGen
                 GetCell(2, 1),
                 GetCell(1 + values.GetLength(0), values.GetLength(1))).Value2 = values;
 
-
             string[] pricePerSqmeter = new string[values.GetLength(0)];
             for (int row = 0; row < values.GetLength(0); row++)
             {
                 pricePerSqmeter[row] = string.Format("={0}/{1}", values[row, 7], values[row, 6]);
             };
-
             xlSheet.get_Range(
                 GetCell(2, 9),
                 GetCell(1 + values.GetLength(0), 9)).Value2 = pricePerSqmeter;
+
+            //Formatting
+            Excel.Range headerRange = xlSheet.get_Range(GetCell(1, 1), GetCell(1, headers.Length));
+            headerRange.Font.Bold = true;
+            headerRange.VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
+            headerRange.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+            headerRange.EntireColumn.AutoFit();
+            headerRange.RowHeight = 40;
+            headerRange.Interior.Color = Color.LightBlue;
+            headerRange.BorderAround2(Excel.XlLineStyle.xlContinuous, Excel.XlBorderWeight.xlThick);
+
+            Excel.Range tableRange = xlSheet.get_Range(GetCell(1, 1), GetCell(values.GetLength(0), values.GetLength(1)));
+            tableRange.BorderAround2(Excel.XlLineStyle.xlContinuous, Excel.XlBorderWeight.xlThick);
+
+            Excel.Range firstColumn = xlSheet.get_Range(GetCell(1, 1), GetCell(values.GetLength(0), 1));
+            firstColumn.Font.Bold = true;
+            firstColumn.Interior.Color = Color.LightYellow;
+
+            Excel.Range lastColumn = xlSheet.get_Range(GetCell(1, values.GetLength(1)), GetCell(values.GetLength(0), values.GetLength(1)));
+            lastColumn.Interior.Color = Color.LightGreen;
+            lastColumn.NumberFormat = "0.00";
         }
     }
 }
