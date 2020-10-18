@@ -22,8 +22,13 @@ namespace MNBWebszolg
         public Form1()
         {
             InitializeComponent();
+            LoadCurrencies();
+            RefreshData();
+        }
+        private void LoadCurrencies()
+        {
             var mnbService = new MNBArfolyamServiceSoapClient();
-            var request = new GetCurrenciesRequestBody() {};
+            var request = new GetCurrenciesRequestBody() { };
             var response = mnbService.GetCurrencies(request);
             var currenciesXml = response.GetCurrenciesResult;
             var xml = new XmlDocument();
@@ -34,7 +39,6 @@ namespace MNBWebszolg
                 Currencies.Add(currency);
             };
             comboBox1.DataSource = Currencies;
-            RefreshData();
         }
         private void RefreshData()
         {
@@ -66,6 +70,8 @@ namespace MNBWebszolg
                 Rates.Add(rate);
                 rate.Date = DateTime.Parse(element.GetAttribute("date"));
                 var childElement = (XmlElement)element.ChildNodes[0];
+                if (childElement == null)
+                    continue;
                 rate.Currency = childElement.GetAttribute("curr");
                 var unit = decimal.Parse(childElement.GetAttribute("unit"));
                 var value = decimal.Parse(childElement.InnerText);
