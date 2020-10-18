@@ -1,4 +1,5 @@
-﻿using MNBWebszolg.MNBServiceReference;
+﻿using MNBWebszolg.Entities;
+using MNBWebszolg.MNBServiceReference;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,10 +14,12 @@ namespace MNBWebszolg
 {
     public partial class Form1 : Form
     {
+        BindingList<RateData> Rates;
         public Form1()
         {
             InitializeComponent();
             CallWebService();
+            dataGridView1.DataSource = Rates;
         }
         private void CallWebService()
         {
