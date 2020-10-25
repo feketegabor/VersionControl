@@ -24,10 +24,21 @@ namespace Microsimulation
         public Form1()
         {
             InitializeComponent();
+            lbClosingYear.Text = Resource1.ClosingYear;
+            lbPopulation.Text = Resource1.PopulationFile;
+            btnBrowse.Text = Resource1.Browse;
+            btnStart.Text = Resource1.Start;
+
             Population = GetPopulation(@"C:\Users\black\AppData\Local\Temp\nép.csv");
             BirthProbabilities = GetBirthProbability(@"C:\Users\black\AppData\Local\Temp\születés.csv");
             DeathProbabilities = GetDeathProbabilities(@"C:\Users\black\AppData\Local\Temp\halál.csv");
-            for (int year = 2005; year <= 2024; year++)
+
+            nudClosingYear.Value = 2024;
+        }
+
+        private void Simulation()
+        {
+            for (int year = 2005; year <= nudClosingYear.Value; year++)
             {
                 // Végigmegyünk az összes személyen
                 for (int i = 0; i < Population.Count; i++)
@@ -45,6 +56,7 @@ namespace Microsimulation
                     string.Format("Év:{0} Fiúk:{1} Lányok:{2}", year, nbrOfMales, nbrOfFemales));
             }
         }
+
         List<Person> GetPopulation(string csvpath)
         {
             List<Person> population = new List<Person>();
@@ -133,6 +145,15 @@ namespace Microsimulation
                     Population.Add(újszülött);
                 }
             }
+        }
+        private void btnStart_Click(object sender, EventArgs e)
+        {
+            Simulation();
+        }
+
+        private void btnBrowse_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
