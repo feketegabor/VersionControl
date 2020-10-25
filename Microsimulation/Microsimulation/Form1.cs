@@ -7,6 +7,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.Remoting.Metadata.W3cXsd2001;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -18,9 +19,9 @@ namespace Microsimulation
         List<Person> Population = new List<Person>();
         List<BirthProbability> BirthProbabilities = new List<BirthProbability>();
         List<DeathProbability> DeathProbabilities = new List<DeathProbability>();
-
+        List<int> NbrOfMales = new List<int>();
+        List<int> NbrOfFemales = new List<int>();
         Random rng = new Random(1234);
-
         public Form1()
         {
             InitializeComponent();
@@ -28,17 +29,18 @@ namespace Microsimulation
             lbPopulation.Text = Resource1.PopulationFile;
             btnBrowse.Text = Resource1.Browse;
             btnStart.Text = Resource1.Start;
+            lbPopulation.Left = tbPopulationFilePath.Left - lbPopulation.Width;
 
-            Population = GetPopulation(@"C:\Users\black\AppData\Local\Temp\nép.csv");
             BirthProbabilities = GetBirthProbability(@"C:\Users\black\AppData\Local\Temp\születés.csv");
             DeathProbabilities = GetDeathProbabilities(@"C:\Users\black\AppData\Local\Temp\halál.csv");
 
-            nudClosingYear.Value = 2024;
+            nudClosingYear.Maximum = (decimal)2024;
+            nudClosingYear.Minimum = (decimal)2005;
         }
-
         private void Simulation()
         {
-            for (int year = 2005; year <= nudClosingYear.Value; year++)
+            Population = GetPopulation(tbPopulationFilePath.Text);
+            for (int year = (int)nudClosingYear.Minimum; year <= nudClosingYear.Value; year++)
             {
                 // Végigmegyünk az összes személyen
                 for (int i = 0; i < Population.Count; i++)
@@ -52,11 +54,12 @@ namespace Microsimulation
                 int nbrOfFemales = (from x in Population
                                     where x.Gender == Gender.Female && x.IsAlive
                                     select x).Count();
+                NbrOfMales.Add(nbrOfMales);
+                NbrOfFemales.Add(nbrOfFemales);
                 Console.WriteLine(
                     string.Format("Év:{0} Fiúk:{1} Lányok:{2}", year, nbrOfMales, nbrOfFemales));
             }
         }
-
         List<Person> GetPopulation(string csvpath)
         {
             List<Person> population = new List<Person>();
@@ -148,12 +151,31 @@ namespace Microsimulation
         }
         private void btnStart_Click(object sender, EventArgs e)
         {
+            NbrOfMales.Clear();
+            NbrOfFemales.Clear();
+            richTextBox1.Clear();
             Simulation();
+            for (int i = 0; i < NbrOfMales.Count; i++)
+            {
+                richTextBox1.Text += string.Format("Szimulációs év {0}\n \tFiúk: {1}\n \tLányok: {2}\n\n", i+(int)nudClosingYear.Minimum, NbrOfMales[i], NbrOfFemales[i]);
+            }
         }
-
         private void btnBrowse_Click(object sender, EventArgs e)
         {
+            // Példányosít egyet a windows standard fájlmegnyitó ablakából
+            OpenFileDialog ofd = new OpenFileDialog();
 
+            // Opcionális rész
+            ofd.InitialDirectory = Application.StartupPath; // Alapértelmezetten az exe fájlunk mappája fog megnyílni a dialógus ablakban
+            ofd.Filter = "Comma Seperated Values (*.csv)|*.csv"; // A kiválasztható fájlformátumokat adjuk meg ezzel a sorral. Jelen esetben csak a csv-t fogadjuk el
+            ofd.DefaultExt = "csv"; // A csv lesz az alapértelmezetten kiválasztott kiterjesztés
+            ofd.AddExtension = true; // Ha ez igaz, akkor hozzáírja a megadott fájlnévhez a kiválasztott kiterjesztést, de érzékeli, ha a felhasználó azt is beírta és nem fogja duplán hozzáírni
+
+            // Ez a sor megnyitja a dialógus ablakot és csak akkor engedi tovább futni a kódot, ha az ablakot az OK gombbal zárták be
+            if (ofd.ShowDialog() != DialogResult.OK) return;
+
+            tbPopulationFilePath.Text = ofd.FileName;
+            //Population = GetPopulation(csvPathPopulation);
         }
     }
 }

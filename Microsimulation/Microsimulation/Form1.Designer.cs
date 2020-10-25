@@ -50,7 +50,7 @@
             // lbPopulation
             // 
             this.lbPopulation.AutoSize = true;
-            this.lbPopulation.Location = new System.Drawing.Point(228, 18);
+            this.lbPopulation.Location = new System.Drawing.Point(202, 18);
             this.lbPopulation.Name = "lbPopulation";
             this.lbPopulation.Size = new System.Drawing.Size(35, 13);
             this.lbPopulation.TabIndex = 1;
