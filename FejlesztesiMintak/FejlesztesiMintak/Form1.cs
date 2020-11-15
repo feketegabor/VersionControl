@@ -23,6 +23,7 @@ namespace FejlesztesiMintak
         public Form1()
         {
             InitializeComponent();
+            Factory = new BallFactory();
         }
 
         private void createTimer_Tick(object sender, EventArgs e)
