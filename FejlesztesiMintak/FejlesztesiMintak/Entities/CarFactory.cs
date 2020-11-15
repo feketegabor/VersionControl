@@ -9,7 +9,7 @@ namespace FejlesztesiMintak.Entities
 {
     class CarFactory : IToyFactory
     {
-        public Toy CreateNew()
+        public Abstractions.Toy CreateNew()
         {
             return new Car();
         }
