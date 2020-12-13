@@ -23,9 +23,9 @@ namespace beadando
             string fileName = "opendata.ecdc.europa.eu.xml";
             string path = Path.Combine(Environment.CurrentDirectory, @"Data\", fileName);
 
-            XElement covidXml = XElement.Load(path);
+            XElement covidXml = XElement.Load("https://opendata.ecdc.europa.eu/covid19/casedistribution/xml");
 
-            IEnumerable<XElement> hungary = from item in covidXml.Descendants("record")
+            IEnumerable <XElement> hungary = from item in covidXml.Descendants("record")
                                             where (string)item.Element("countriesAndTerritories") == "Hungary"
                                             select item;
             dataGridView1.DataSource = hungary.ToList();
