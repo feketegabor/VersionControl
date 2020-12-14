@@ -14,8 +14,8 @@ namespace beadando.Entities
         public int Cases { get; set; }
         public int Deaths { get; set; }
         public string Country { get; set; }
-        public int popData { get; set; }
+        public long popData { get; set; }
         public string Continent { get; set; }
-        public double last14DaysPer100000 { get; set; }
+        public decimal last14DaysPer100000 { get; set; }
     }
 }
