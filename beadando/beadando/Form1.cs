@@ -1,4 +1,5 @@
-﻿using System;
+﻿using beadando.Entities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,20 +16,44 @@ namespace beadando
 {
     public partial class Form1 : Form
     {
+        List<CovidRecord> Records = new List<CovidRecord>(); 
         public Form1()
         {
             InitializeComponent();
 
-            // XML document létrehozása és az aktuális XML szöveg betöltése
+            // XML element létrehozása és az XML fájl betöltése
             string fileName = "opendata.ecdc.europa.eu.xml";
             string path = Path.Combine(Environment.CurrentDirectory, @"Data\", fileName);
 
             XElement covidXml = XElement.Load("https://opendata.ecdc.europa.eu/covid19/casedistribution/xml");
 
-            IEnumerable <XElement> hungary = from item in covidXml.Descendants("record")
-                                            where (string)item.Element("countriesAndTerritories") == "Hungary"
-                                            select item;
-            dataGridView1.DataSource = hungary.ToList();
+            //REKORD LISTA FELTÖLTÉSE
+            List<CovidRecord> covidRecords = covidXml.Elements("record").Select(x =>
+            new CovidRecord
+            {
+                Year = int.Parse(x.Element("year").Value),
+                Month = int.Parse(x.Element("month").Value),
+                Day = int.Parse(x.Element("day").Value),
+                Cases = int.Parse(x.Element("cases").Value),
+                Deaths = int.Parse(x.Element("deaths").Value),
+                Country = x.Element("countriesAndTerritories").Value,
+                popData = int.Parse(x.Element("popData2019").Value),
+                Continent = x.Element("continentExp").Value,
+                last14DaysPer100000 = double.Parse(x.Element("Cumulative_number_for_14_days_of_COVID-19_cases_per_100000").Value)
+            }).ToList();
+         
+
+            //SZŰRÉS MAGYAR REKORDOKRA
+            //IEnumerable <XElement> hungary = from item in covidXml.Descendants("record")
+            //                                where (string)item.Element("countriesAndTerritories") == "Hungary"
+            //                                select item;
+            //dataGridView1.DataSource = hungary.ToList();
+
+
+
+
+
+
             //var xml = new XmlDocument();
             //xml.LoadXml(path);
 
