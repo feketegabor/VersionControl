@@ -25,24 +25,55 @@ namespace beadando
             string fileName = "opendata.ecdc.europa.eu.xml";
             string path = Path.Combine(Environment.CurrentDirectory, @"Data\", fileName);
 
-            XElement covidXml = XElement.Load("https://opendata.ecdc.europa.eu/covid19/casedistribution/xml");
+            //XElement covidXml = XElement.Load("https://opendata.ecdc.europa.eu/covid19/casedistribution/xml");
+            //XElement covidXml = XElement.Load(path);
 
             //REKORD LISTA FELTÖLTÉSE
-            List<CovidRecord> covidRecords = covidXml.Elements("record").Select(x =>
-            new CovidRecord
-            {
-                Year = int.Parse(x.Element("year").Value),
-                Month = int.Parse(x.Element("month").Value),
-                Day = int.Parse(x.Element("day").Value),
-                Cases = int.Parse(x.Element("cases").Value),
-                Deaths = int.Parse(x.Element("deaths").Value),
-                Country = x.Element("countriesAndTerritories").Value,
-                popData = int.Parse(x.Element("popData2019").Value),
-                Continent = x.Element("continentExp").Value,
-                last14DaysPer100000 = double.Parse(x.Element("Cumulative_number_for_14_days_of_COVID-19_cases_per_100000").Value)
-            }).ToList();
-         
+            //List<CovidRecord> covidRecords = covidXml.Elements("record").Select(x =>
+            //new CovidRecord
+            //{
+            //    Year = int.Parse(x.Element("year").Value),
+            //    Month = int.Parse(x.Element("month").Value),
+            //    Day = int.Parse(x.Element("day").Value),
+            //    Cases = int.Parse(x.Element("cases").Value),
+            //    Deaths = int.Parse(x.Element("deaths").Value),
+            //    Country = x.Element("countriesAndTerritories").Value,
+            //    popData = int.Parse(x.Element("popData2019").Value),
+            //    Continent = x.Element("continentExp").Value,
+            //    //last14DaysPer100000 = double.Parse(x.Element("Cumulative_number_for_14_days_of_COVID-19_cases_per_100000").Value)
+            //}).ToList();
 
+            //XML BEOLVASÁS TANÓRA ALAPJÁN
+            var xml = new XmlDocument();
+            xml.LoadXml(path);
+
+            foreach (XmlElement element in xml.DocumentElement)
+            {
+                var record = new CovidRecord();
+                Records.Add(record);
+
+                var firstChildElement = (XmlElement)element.ChildNodes[1];
+                var secondChildElement = (XmlElement)element.ChildNodes[2];
+                var thirdChildElement = (XmlElement)element.ChildNodes[3];
+                var fourthChildElement = (XmlElement)element.ChildNodes[4];
+                var fifthChildElement = (XmlElement)element.ChildNodes[5];
+                var sixthChildElement = (XmlElement)element.ChildNodes[6];
+                var ninthChildElement = (XmlElement)element.ChildNodes[9];
+                var tenthChildElement = (XmlElement)element.ChildNodes[10];
+                var eleventhChildElement = (XmlElement)element.ChildNodes[11];
+
+                record.Day = int.Parse(firstChildElement.InnerText);
+                record.Month = int.Parse(secondChildElement.InnerText);
+                record.Year = int.Parse(thirdChildElement.InnerText);
+                record.Cases = int.Parse(fourthChildElement.InnerText);
+                record.Deaths = int.Parse(fifthChildElement.InnerText);
+                record.Country = sixthChildElement.InnerText;
+                record.popData = int.Parse(ninthChildElement.InnerText);
+                record.Continent = tenthChildElement.InnerText;
+                record.last14DaysPer100000 = double.Parse(eleventhChildElement.InnerText);
+            }
+
+            dataGridView1.DataSource = covidRecords;
             //SZŰRÉS MAGYAR REKORDOKRA
             //IEnumerable <XElement> hungary = from item in covidXml.Descendants("record")
             //                                where (string)item.Element("countriesAndTerritories") == "Hungary"
