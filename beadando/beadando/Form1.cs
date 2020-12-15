@@ -1,4 +1,5 @@
-﻿using beadando.Entities;
+﻿using beadando.Abstraction;
+using beadando.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -20,6 +21,9 @@ namespace beadando
         List<CovidRecord> FilteredRecords = new List<CovidRecord>();
         public Form1()
         {
+            SortButton sortButton = new SortButton();
+            this.Controls.Add(sortButton);
+            sortButton.Click += SortButton_Click;
             InitializeComponent();
 
             // XML element létrehozása és az XML fájl betöltése
@@ -153,6 +157,47 @@ namespace beadando
         {
             lbCountry.Enabled = !lbCountry.Enabled;
         }
+        int counter = 1;
+        private void SortButton_Click(object sender, EventArgs e)
+        {
+            counter++;
+            var recordsToGet = (from r in Records select r);
+
+            if (chbYear.Checked)
+            {
+                recordsToGet = from r in recordsToGet
+                               where r.Year == (int)cbYear.SelectedItem
+                               select r;
+            }
+            if (chbMonth.Checked)
+            {
+                recordsToGet = from r in recordsToGet
+                               where r.Month == (int)cbMonth.SelectedItem
+                               select r;
+            }
+            if (chbDay.Checked)
+            {
+                recordsToGet = from r in recordsToGet
+                               where r.Day == (int)cbDay.SelectedItem
+                               select r;
+            }
+            if (chbContinent.Checked)
+            {
+                recordsToGet = from r in recordsToGet
+                               where r.Continent == (string)cbContinent.SelectedItem
+                               select r;
+            }
+            if (chbCountry.Checked)
+            {
+                recordsToGet = from r in recordsToGet
+                               where r.Country == (string)lbCountry.SelectedItem
+                               select r;
+            }
+            FilteredRecords = recordsToGet.ToList();
+            dataGridView1.DataSource = FilteredRecords;
+            ExportCsvButton exportCsvButton = new ExportCsvButton(recordsToGet.ToList());
+            Controls.Add(exportCsvButton);
+        }
 
         private void btnSort_Click(object sender, EventArgs e)
         {
@@ -190,8 +235,10 @@ namespace beadando
             }
             FilteredRecords = recordsToGet.ToList();
             dataGridView1.DataSource = FilteredRecords;
+            ExportCsvButton exportCsvButton = new ExportCsvButton(FilteredRecords);
+            this.Controls.Add(exportCsvButton);
         }
-
+        
         private void btnExportCsv_Click(object sender, EventArgs e)
         {
             SaveFileDialog sfd = new SaveFileDialog();
@@ -226,6 +273,21 @@ namespace beadando
                     sw.WriteLine();
                 }
             }
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            dataGridView1.FirstDisplayedScrollingRowIndex = dataGridView1.FirstDisplayedScrollingRowIndex + 1;
+        }
+
+        private void btnAutoScroll_Click(object sender, EventArgs e)
+        {
+            timer1.Enabled = true;
+        }
+
+        private void chbAutoScroll_CheckedChanged(object sender, EventArgs e)
+        {
+            timer1.Enabled = !timer1.Enabled;
         }
     }
 }

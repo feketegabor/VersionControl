@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.cbYear = new System.Windows.Forms.ComboBox();
             this.cbMonth = new System.Windows.Forms.ComboBox();
@@ -41,6 +42,8 @@
             this.chbDay = new System.Windows.Forms.CheckBox();
             this.chbContinent = new System.Windows.Forms.CheckBox();
             this.chbCountry = new System.Windows.Forms.CheckBox();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.chbAutoScroll = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -52,7 +55,7 @@
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(341, 0);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(849, 450);
+            this.dataGridView1.Size = new System.Drawing.Size(934, 450);
             this.dataGridView1.TabIndex = 0;
             // 
             // cbYear
@@ -100,17 +103,26 @@
             // 
             // btnSort
             // 
-            this.btnSort.Location = new System.Drawing.Point(45, 328);
+            this.btnSort.BackColor = System.Drawing.Color.DarkGray;
+            this.btnSort.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSort.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.btnSort.FlatAppearance.BorderSize = 0;
+            this.btnSort.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Gray;
+            this.btnSort.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Silver;
+            this.btnSort.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSort.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.btnSort.ForeColor = System.Drawing.Color.Black;
+            this.btnSort.Location = new System.Drawing.Point(12, 391);
             this.btnSort.Name = "btnSort";
-            this.btnSort.Size = new System.Drawing.Size(225, 57);
+            this.btnSort.Size = new System.Drawing.Size(148, 47);
             this.btnSort.TabIndex = 11;
             this.btnSort.Text = "Szűrés";
-            this.btnSort.UseVisualStyleBackColor = true;
+            this.btnSort.UseVisualStyleBackColor = false;
             this.btnSort.Click += new System.EventHandler(this.btnSort_Click);
             // 
             // btnExportCsv
             // 
-            this.btnExportCsv.Location = new System.Drawing.Point(85, 391);
+            this.btnExportCsv.Location = new System.Drawing.Point(180, 391);
             this.btnExportCsv.Name = "btnExportCsv";
             this.btnExportCsv.Size = new System.Drawing.Size(143, 47);
             this.btnExportCsv.TabIndex = 12;
@@ -173,11 +185,29 @@
             this.chbCountry.UseVisualStyleBackColor = true;
             this.chbCountry.CheckedChanged += new System.EventHandler(this.chbCountry_CheckedChanged);
             // 
+            // timer1
+            // 
+            this.timer1.Interval = 300;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // chbAutoScroll
+            // 
+            this.chbAutoScroll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.chbAutoScroll.AutoSize = true;
+            this.chbAutoScroll.Location = new System.Drawing.Point(261, 0);
+            this.chbAutoScroll.Name = "chbAutoScroll";
+            this.chbAutoScroll.Size = new System.Drawing.Size(74, 17);
+            this.chbAutoScroll.TabIndex = 18;
+            this.chbAutoScroll.Text = "AutoScroll";
+            this.chbAutoScroll.UseVisualStyleBackColor = true;
+            this.chbAutoScroll.CheckedChanged += new System.EventHandler(this.chbAutoScroll_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1190, 450);
+            this.ClientSize = new System.Drawing.Size(1275, 450);
+            this.Controls.Add(this.chbAutoScroll);
             this.Controls.Add(this.chbCountry);
             this.Controls.Add(this.chbContinent);
             this.Controls.Add(this.chbDay);
@@ -214,6 +244,8 @@
         private System.Windows.Forms.CheckBox chbDay;
         private System.Windows.Forms.CheckBox chbContinent;
         private System.Windows.Forms.CheckBox chbCountry;
+        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.CheckBox chbAutoScroll;
     }
 }
 
