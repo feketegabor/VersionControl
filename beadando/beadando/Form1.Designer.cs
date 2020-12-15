@@ -110,12 +110,13 @@
             // 
             // btnExportCsv
             // 
-            this.btnExportCsv.Location = new System.Drawing.Point(88, 391);
+            this.btnExportCsv.Location = new System.Drawing.Point(85, 391);
             this.btnExportCsv.Name = "btnExportCsv";
             this.btnExportCsv.Size = new System.Drawing.Size(143, 47);
             this.btnExportCsv.TabIndex = 12;
             this.btnExportCsv.Text = "Exportálás CSV-be";
             this.btnExportCsv.UseVisualStyleBackColor = true;
+            this.btnExportCsv.Click += new System.EventHandler(this.btnExportCsv_Click);
             // 
             // chbYear
             // 
