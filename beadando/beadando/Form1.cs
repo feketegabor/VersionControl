@@ -29,15 +29,7 @@ namespace beadando
 
             //XML BEOLVASÁS TANÓRA ALAPJÁN
             var xml = new XmlDocument();
-            xml.Load(URL);
-
-            //foreach (XmlNode node in xml)
-            //{
-            //    if (node.NodeType == XmlNodeType.XmlDeclaration)
-            //    {
-            //        xml.RemoveChild(node);
-            //    }
-            //}
+            xml.Load(path);
 
             foreach (XmlElement element in xml.DocumentElement)
             {
@@ -68,13 +60,66 @@ namespace beadando
                 record.Continent = tenthChildElement.InnerText;
 
                 decimal last14DaysPer1000 = 0;
-                decimal.TryParse(eleventhChildElement.InnerText.Replace(".",","), out last14DaysPer1000);
+                decimal.TryParse(eleventhChildElement.InnerText.Replace(".", ","), out last14DaysPer1000);
                 record.last14DaysPer100000 = last14DaysPer1000;
-
-                //record.last14DaysPer100000 = eleventhChildElement.InnerText;
             }
 
+            //COMBOBOXOK ADATOKKAL VALÓ FELTÖLTÉSE
+            cbYear.DataSource = (from r in Records group r by new { r.Year } into yearGroup select yearGroup.Key.Year).ToList();
+            cbMonth.DataSource = (from r in Records group r by new { r.Month } into monthGroup select monthGroup.Key.Month).ToList();
+            cbDay.DataSource = (from r in Records group r by new { r.Day } into dayGroup select dayGroup.Key.Day).ToList();
+            cbContinent.DataSource = (from r in Records group r by new { r.Continent } into continentGroup select continentGroup.Key.Continent).ToList();
+            
             dataGridView1.DataSource = Records;
+
+            //COMBOBOXOK KEZDETI DEAKTIVÁLÁSA
+            cbContinent.Enabled = false;
+        }
+
+        private void ListCountries()
+        {
+            if (chbContinent.Checked)
+            {
+                lbCountry.DataSource = (from r in Records
+                                        where r.Continent == (string)cbContinent.SelectedValue
+                                        group r by new { r.Country } into countryGroup
+                                        select countryGroup.Key.Country).ToList();
+            }
+            else
+            {
+                lbCountry.DataSource = (from r in Records group r by new { r.Country } into countryGroup select countryGroup.Key.Country).ToList();
+            }
+        }
+
+        private void cbContinent_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ListCountries();
+        }
+
+        private void chbContinent_CheckedChanged(object sender, EventArgs e)
+        {
+            ListCountries();
+            cbContinent.Enabled = !cbContinent.Enabled;
+        }
+
+        private void chbYear_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void chbMonth_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void chbDay_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void chbCountry_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
