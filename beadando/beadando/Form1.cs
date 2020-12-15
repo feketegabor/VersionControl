@@ -16,7 +16,8 @@ namespace beadando
 {
     public partial class Form1 : Form
     {
-        List<CovidRecord> Records = new List<CovidRecord>(); 
+        List<CovidRecord> Records = new List<CovidRecord>();
+        List<CovidRecord> FilteredRecords = new List<CovidRecord>();
         public Form1()
         {
             InitializeComponent();
@@ -187,12 +188,44 @@ namespace beadando
                                where r.Country == (string)lbCountry.SelectedItem
                                select r;
             }
-            dataGridView1.DataSource = recordsToGet.ToList();
+            FilteredRecords = recordsToGet.ToList();
+            dataGridView1.DataSource = FilteredRecords;
         }
 
         private void btnExportCsv_Click(object sender, EventArgs e)
         {
+            SaveFileDialog sfd = new SaveFileDialog();
 
+            sfd.InitialDirectory = Application.StartupPath;
+            sfd.Filter = "Comma Seperated Values (*.csv) |*.csv";
+            sfd.DefaultExt = "csv";
+            sfd.AddExtension = true;
+
+            if (sfd.ShowDialog() != DialogResult.OK) return;
+            using (StreamWriter sw = new StreamWriter(sfd.FileName, false, Encoding.UTF8))
+            {
+                foreach (var r in FilteredRecords)
+                {
+                    sw.Write(r.Year);
+                    sw.Write(";");
+                    sw.Write(r.Month);
+                    sw.Write(";");
+                    sw.Write(r.Day);
+                    sw.Write(";");
+                    sw.Write(r.Cases);
+                    sw.Write(";");
+                    sw.Write(r.Deaths);
+                    sw.Write(";");
+                    sw.Write(r.Country);
+                    sw.Write(";");
+                    sw.Write(r.popData);
+                    sw.Write(";");
+                    sw.Write(r.Continent);
+                    sw.Write(";");
+                    sw.Write(r.last14DaysPer100000);
+                    sw.WriteLine();
+                }
+            }
         }
     }
 }
