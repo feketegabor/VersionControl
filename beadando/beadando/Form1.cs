@@ -27,7 +27,7 @@ namespace beadando
 
             string URL = "https://opendata.ecdc.europa.eu/covid19/casedistribution/xml";
 
-            //XML BEOLVASÁS TANÓRA ALAPJÁN
+            //XML BEOLVASÁS
             var xml = new XmlDocument();
             xml.Load(path);
 
@@ -65,15 +65,46 @@ namespace beadando
             }
 
             //COMBOBOXOK ADATOKKAL VALÓ FELTÖLTÉSE
-            cbYear.DataSource = (from r in Records group r by new { r.Year } into yearGroup select yearGroup.Key.Year).ToList();
-            cbMonth.DataSource = (from r in Records group r by new { r.Month } into monthGroup select monthGroup.Key.Month).ToList();
-            cbDay.DataSource = (from r in Records group r by new { r.Day } into dayGroup select dayGroup.Key.Day).ToList();
-            cbContinent.DataSource = (from r in Records group r by new { r.Continent } into continentGroup select continentGroup.Key.Continent).ToList();
-            
-            dataGridView1.DataSource = Records;
+            var yearsList = (from r in Records group r by new { r.Year } into yearGroup select yearGroup.Key.Year).ToList();
+            cbYear.DataSource = SelectionSort(yearsList);
 
-            //COMBOBOXOK KEZDETI DEAKTIVÁLÁSA
+            var monthsList = (from r in Records group r by new { r.Month } into monthGroup select monthGroup.Key.Month).ToList();
+            cbMonth.DataSource = SelectionSort(monthsList);
+
+            var daysList = (from r in Records group r by new { r.Day } into dayGroup select dayGroup.Key.Day).ToList();
+            cbDay.DataSource = SelectionSort(daysList);
+
+            cbContinent.DataSource = (from r in Records group r by new { r.Continent } into continentGroup select continentGroup.Key.Continent).ToList();
+
+            //SZŰRŐK KEZDETI DEAKTIVÁLÁSA
+            cbYear.Enabled = false;
+            cbMonth.Enabled = false;
+            cbDay.Enabled = false;
             cbContinent.Enabled = false;
+            lbCountry.Enabled = false;
+        }
+
+        private List<int> SelectionSort(List<int> input)
+        {
+            for (var i = 0; i < input.Count; i++)
+            {
+                var min = i;
+                for (var j = i + 1; j < input.Count; j++)
+                {
+                    if (input[min] > input[j])
+                    {
+                        min = j;
+                    }
+                }
+
+                if (min != i)
+                {
+                    var lowerValue = input[min];
+                    input[min] = input[i];
+                    input[i] = lowerValue;
+                }
+            }
+            return input;
         }
 
         private void ListCountries()
@@ -81,7 +112,7 @@ namespace beadando
             if (chbContinent.Checked)
             {
                 lbCountry.DataSource = (from r in Records
-                                        where r.Continent == (string)cbContinent.SelectedValue
+                                        where r.Continent == (string)cbContinent.SelectedItem
                                         group r by new { r.Country } into countryGroup
                                         select countryGroup.Key.Country).ToList();
             }
@@ -104,22 +135,59 @@ namespace beadando
 
         private void chbYear_CheckedChanged(object sender, EventArgs e)
         {
-
+            cbYear.Enabled = !cbYear.Enabled;
         }
 
         private void chbMonth_CheckedChanged(object sender, EventArgs e)
         {
-
+            cbMonth.Enabled = !cbMonth.Enabled;
         }
 
         private void chbDay_CheckedChanged(object sender, EventArgs e)
         {
-
+            cbDay.Enabled = !cbDay.Enabled;
         }
 
         private void chbCountry_CheckedChanged(object sender, EventArgs e)
         {
+            lbCountry.Enabled = !lbCountry.Enabled;
+        }
 
+        private void btnSort_Click(object sender, EventArgs e)
+        {
+            var recordsToGet = (from r in Records select r);
+
+            if (chbYear.Checked)
+            {
+                recordsToGet = from r in recordsToGet
+                               where r.Year == (int)cbYear.SelectedItem
+                               select r;
+            }
+            if (chbMonth.Checked)
+            {
+                recordsToGet = from r in recordsToGet
+                               where r.Month == (int)cbMonth.SelectedItem
+                               select r;
+            }
+            if (chbDay.Checked)
+            {
+                recordsToGet = from r in recordsToGet
+                               where r.Day == (int)cbDay.SelectedItem
+                               select r;
+            }
+            if (chbContinent.Checked)
+            {
+                recordsToGet = from r in recordsToGet
+                               where r.Continent == (string)cbContinent.SelectedItem
+                               select r;
+            }
+            if (chbCountry.Checked)
+            {
+                recordsToGet = from r in recordsToGet
+                               where r.Country == (string)lbCountry.SelectedItem
+                               select r;
+            }
+            dataGridView1.DataSource = recordsToGet.ToList();
         }
     }
 }

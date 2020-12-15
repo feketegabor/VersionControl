@@ -46,6 +46,9 @@
             // 
             // dataGridView1
             // 
+            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(341, 0);
             this.dataGridView1.Name = "dataGridView1";
@@ -82,6 +85,7 @@
             this.cbContinent.Location = new System.Drawing.Point(12, 104);
             this.cbContinent.Name = "cbContinent";
             this.cbContinent.Size = new System.Drawing.Size(101, 21);
+            this.cbContinent.Sorted = true;
             this.cbContinent.TabIndex = 9;
             this.cbContinent.SelectedIndexChanged += new System.EventHandler(this.cbContinent_SelectedIndexChanged);
             // 
@@ -91,6 +95,7 @@
             this.lbCountry.Location = new System.Drawing.Point(119, 104);
             this.lbCountry.Name = "lbCountry";
             this.lbCountry.Size = new System.Drawing.Size(204, 199);
+            this.lbCountry.Sorted = true;
             this.lbCountry.TabIndex = 10;
             // 
             // btnSort
@@ -101,6 +106,7 @@
             this.btnSort.TabIndex = 11;
             this.btnSort.Text = "Szűrés";
             this.btnSort.UseVisualStyleBackColor = true;
+            this.btnSort.Click += new System.EventHandler(this.btnSort_Click);
             // 
             // btnExportCsv
             // 
