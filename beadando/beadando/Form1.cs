@@ -157,49 +157,8 @@ namespace beadando
         {
             lbCountry.Enabled = !lbCountry.Enabled;
         }
-        int counter = 1;
+
         private void SortButton_Click(object sender, EventArgs e)
-        {
-            counter++;
-            var recordsToGet = (from r in Records select r);
-
-            if (chbYear.Checked)
-            {
-                recordsToGet = from r in recordsToGet
-                               where r.Year == (int)cbYear.SelectedItem
-                               select r;
-            }
-            if (chbMonth.Checked)
-            {
-                recordsToGet = from r in recordsToGet
-                               where r.Month == (int)cbMonth.SelectedItem
-                               select r;
-            }
-            if (chbDay.Checked)
-            {
-                recordsToGet = from r in recordsToGet
-                               where r.Day == (int)cbDay.SelectedItem
-                               select r;
-            }
-            if (chbContinent.Checked)
-            {
-                recordsToGet = from r in recordsToGet
-                               where r.Continent == (string)cbContinent.SelectedItem
-                               select r;
-            }
-            if (chbCountry.Checked)
-            {
-                recordsToGet = from r in recordsToGet
-                               where r.Country == (string)lbCountry.SelectedItem
-                               select r;
-            }
-            FilteredRecords = recordsToGet.ToList();
-            dataGridView1.DataSource = FilteredRecords;
-            ExportCsvButton exportCsvButton = new ExportCsvButton(recordsToGet.ToList());
-            Controls.Add(exportCsvButton);
-        }
-
-        private void btnSort_Click(object sender, EventArgs e)
         {
             var recordsToGet = (from r in Records select r);
 
@@ -236,43 +195,7 @@ namespace beadando
             FilteredRecords = recordsToGet.ToList();
             dataGridView1.DataSource = FilteredRecords;
             ExportCsvButton exportCsvButton = new ExportCsvButton(FilteredRecords);
-            this.Controls.Add(exportCsvButton);
-        }
-        
-        private void btnExportCsv_Click(object sender, EventArgs e)
-        {
-            SaveFileDialog sfd = new SaveFileDialog();
-
-            sfd.InitialDirectory = Application.StartupPath;
-            sfd.Filter = "Comma Seperated Values (*.csv) |*.csv";
-            sfd.DefaultExt = "csv";
-            sfd.AddExtension = true;
-
-            if (sfd.ShowDialog() != DialogResult.OK) return;
-            using (StreamWriter sw = new StreamWriter(sfd.FileName, false, Encoding.UTF8))
-            {
-                foreach (var r in FilteredRecords)
-                {
-                    sw.Write(r.Year);
-                    sw.Write(";");
-                    sw.Write(r.Month);
-                    sw.Write(";");
-                    sw.Write(r.Day);
-                    sw.Write(";");
-                    sw.Write(r.Cases);
-                    sw.Write(";");
-                    sw.Write(r.Deaths);
-                    sw.Write(";");
-                    sw.Write(r.Country);
-                    sw.Write(";");
-                    sw.Write(r.popData);
-                    sw.Write(";");
-                    sw.Write(r.Continent);
-                    sw.Write(";");
-                    sw.Write(r.last14DaysPer100000);
-                    sw.WriteLine();
-                }
-            }
+            Controls.Add(exportCsvButton);
         }
 
         private void timer1_Tick(object sender, EventArgs e)
