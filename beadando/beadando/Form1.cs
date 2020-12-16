@@ -19,11 +19,12 @@ namespace beadando
     {
         List<CovidRecord> Records = new List<CovidRecord>();
         List<CovidRecord> FilteredRecords = new List<CovidRecord>();
+        public Control exportCsvButton { get; private set; }
         public Form1()
         {
-            SortButton sortButton = new SortButton();
-            this.Controls.Add(sortButton);
-            sortButton.Click += SortButton_Click;
+            FilterButton filterButton = new FilterButton();
+            this.Controls.Add(filterButton);
+            filterButton.Click += FilterButton_Click;
             InitializeComponent();
 
             // XML element létrehozása és az XML fájl betöltése
@@ -157,10 +158,12 @@ namespace beadando
         {
             lbCountry.Enabled = !lbCountry.Enabled;
         }
-        int counter = 1;
-        private void SortButton_Click(object sender, EventArgs e)
+
+        
+
+        private void FilterButton_Click(object sender, EventArgs e)
         {
-            counter++;
+            Controls.Remove(exportCsvButton);
             var recordsToGet = (from r in Records select r);
 
             if (chbYear.Checked)
@@ -195,85 +198,85 @@ namespace beadando
             }
             FilteredRecords = recordsToGet.ToList();
             dataGridView1.DataSource = FilteredRecords;
-            ExportCsvButton exportCsvButton = new ExportCsvButton(recordsToGet.ToList());
+            exportCsvButton = new ExportCsvButton(recordsToGet.ToList());
             Controls.Add(exportCsvButton);
         }
-
-        private void btnSort_Click(object sender, EventArgs e)
-        {
-            var recordsToGet = (from r in Records select r);
-
-            if (chbYear.Checked)
-            {
-                recordsToGet = from r in recordsToGet
-                               where r.Year == (int)cbYear.SelectedItem
-                               select r;
-            }
-            if (chbMonth.Checked)
-            {
-                recordsToGet = from r in recordsToGet
-                               where r.Month == (int)cbMonth.SelectedItem
-                               select r;
-            }
-            if (chbDay.Checked)
-            {
-                recordsToGet = from r in recordsToGet
-                               where r.Day == (int)cbDay.SelectedItem
-                               select r;
-            }
-            if (chbContinent.Checked)
-            {
-                recordsToGet = from r in recordsToGet
-                               where r.Continent == (string)cbContinent.SelectedItem
-                               select r;
-            }
-            if (chbCountry.Checked)
-            {
-                recordsToGet = from r in recordsToGet
-                               where r.Country == (string)lbCountry.SelectedItem
-                               select r;
-            }
-            FilteredRecords = recordsToGet.ToList();
-            dataGridView1.DataSource = FilteredRecords;
-            ExportCsvButton exportCsvButton = new ExportCsvButton(FilteredRecords);
-            this.Controls.Add(exportCsvButton);
-        }
         
-        private void btnExportCsv_Click(object sender, EventArgs e)
-        {
-            SaveFileDialog sfd = new SaveFileDialog();
+        //private void btnSort_Click(object sender, EventArgs e)
+        //{
+        //    var recordsToGet = (from r in Records select r);
 
-            sfd.InitialDirectory = Application.StartupPath;
-            sfd.Filter = "Comma Seperated Values (*.csv) |*.csv";
-            sfd.DefaultExt = "csv";
-            sfd.AddExtension = true;
+        //    if (chbYear.Checked)
+        //    {
+        //        recordsToGet = from r in recordsToGet
+        //                       where r.Year == (int)cbYear.SelectedItem
+        //                       select r;
+        //    }
+        //    if (chbMonth.Checked)
+        //    {
+        //        recordsToGet = from r in recordsToGet
+        //                       where r.Month == (int)cbMonth.SelectedItem
+        //                       select r;
+        //    }
+        //    if (chbDay.Checked)
+        //    {
+        //        recordsToGet = from r in recordsToGet
+        //                       where r.Day == (int)cbDay.SelectedItem
+        //                       select r;
+        //    }
+        //    if (chbContinent.Checked)
+        //    {
+        //        recordsToGet = from r in recordsToGet
+        //                       where r.Continent == (string)cbContinent.SelectedItem
+        //                       select r;
+        //    }
+        //    if (chbCountry.Checked)
+        //    {
+        //        recordsToGet = from r in recordsToGet
+        //                       where r.Country == (string)lbCountry.SelectedItem
+        //                       select r;
+        //    }
+        //    FilteredRecords = recordsToGet.ToList();
+        //    dataGridView1.DataSource = FilteredRecords;
+        //    ExportCsvButton exportCsvButton = new ExportCsvButton(FilteredRecords);
+        //    this.Controls.Add(exportCsvButton);
+        //}
+        
+        //private void btnExportCsv_Click(object sender, EventArgs e)
+        //{
+        //    SaveFileDialog sfd = new SaveFileDialog();
 
-            if (sfd.ShowDialog() != DialogResult.OK) return;
-            using (StreamWriter sw = new StreamWriter(sfd.FileName, false, Encoding.UTF8))
-            {
-                foreach (var r in FilteredRecords)
-                {
-                    sw.Write(r.Year);
-                    sw.Write(";");
-                    sw.Write(r.Month);
-                    sw.Write(";");
-                    sw.Write(r.Day);
-                    sw.Write(";");
-                    sw.Write(r.Cases);
-                    sw.Write(";");
-                    sw.Write(r.Deaths);
-                    sw.Write(";");
-                    sw.Write(r.Country);
-                    sw.Write(";");
-                    sw.Write(r.popData);
-                    sw.Write(";");
-                    sw.Write(r.Continent);
-                    sw.Write(";");
-                    sw.Write(r.last14DaysPer100000);
-                    sw.WriteLine();
-                }
-            }
-        }
+        //    sfd.InitialDirectory = Application.StartupPath;
+        //    sfd.Filter = "Comma Seperated Values (*.csv) |*.csv";
+        //    sfd.DefaultExt = "csv";
+        //    sfd.AddExtension = true;
+
+        //    if (sfd.ShowDialog() != DialogResult.OK) return;
+        //    using (StreamWriter sw = new StreamWriter(sfd.FileName, false, Encoding.UTF8))
+        //    {
+        //        foreach (var r in FilteredRecords)
+        //        {
+        //            sw.Write(r.Year);
+        //            sw.Write(";");
+        //            sw.Write(r.Month);
+        //            sw.Write(";");
+        //            sw.Write(r.Day);
+        //            sw.Write(";");
+        //            sw.Write(r.Cases);
+        //            sw.Write(";");
+        //            sw.Write(r.Deaths);
+        //            sw.Write(";");
+        //            sw.Write(r.Country);
+        //            sw.Write(";");
+        //            sw.Write(r.popData);
+        //            sw.Write(";");
+        //            sw.Write(r.Continent);
+        //            sw.Write(";");
+        //            sw.Write(r.last14DaysPer100000);
+        //            sw.WriteLine();
+        //        }
+        //    }
+        //}
 
         private void timer1_Tick(object sender, EventArgs e)
         {

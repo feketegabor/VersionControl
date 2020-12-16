@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace beadando.Entities
 {
-    class SortButton : ButtonDesign
+    class FilterButton : ButtonDesign
     {
-        public SortButton()
+        public FilterButton()
         {
             Text = "Szűrés";
             Width = 148;

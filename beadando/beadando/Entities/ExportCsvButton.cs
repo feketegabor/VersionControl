@@ -57,7 +57,6 @@ namespace beadando.Entities
                     sw.WriteLine();
                 }
             }
-            Parent.Controls.Remove(this);
         }
     }
 }

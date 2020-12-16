@@ -35,8 +35,6 @@
             this.cbDay = new System.Windows.Forms.ComboBox();
             this.cbContinent = new System.Windows.Forms.ComboBox();
             this.lbCountry = new System.Windows.Forms.ListBox();
-            this.btnSort = new System.Windows.Forms.Button();
-            this.btnExportCsv = new System.Windows.Forms.Button();
             this.chbYear = new System.Windows.Forms.CheckBox();
             this.chbMonth = new System.Windows.Forms.CheckBox();
             this.chbDay = new System.Windows.Forms.CheckBox();
@@ -100,35 +98,6 @@
             this.lbCountry.Size = new System.Drawing.Size(204, 199);
             this.lbCountry.Sorted = true;
             this.lbCountry.TabIndex = 10;
-            // 
-            // btnSort
-            // 
-            this.btnSort.BackColor = System.Drawing.Color.DarkGray;
-            this.btnSort.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnSort.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.btnSort.FlatAppearance.BorderSize = 0;
-            this.btnSort.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Gray;
-            this.btnSort.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Silver;
-            this.btnSort.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSort.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.btnSort.ForeColor = System.Drawing.Color.Black;
-            this.btnSort.Location = new System.Drawing.Point(12, 391);
-            this.btnSort.Name = "btnSort";
-            this.btnSort.Size = new System.Drawing.Size(148, 47);
-            this.btnSort.TabIndex = 11;
-            this.btnSort.Text = "Szűrés";
-            this.btnSort.UseVisualStyleBackColor = false;
-            this.btnSort.Click += new System.EventHandler(this.btnSort_Click);
-            // 
-            // btnExportCsv
-            // 
-            this.btnExportCsv.Location = new System.Drawing.Point(180, 391);
-            this.btnExportCsv.Name = "btnExportCsv";
-            this.btnExportCsv.Size = new System.Drawing.Size(143, 47);
-            this.btnExportCsv.TabIndex = 12;
-            this.btnExportCsv.Text = "Exportálás CSV-be";
-            this.btnExportCsv.UseVisualStyleBackColor = true;
-            this.btnExportCsv.Click += new System.EventHandler(this.btnExportCsv_Click);
             // 
             // chbYear
             // 
@@ -194,7 +163,7 @@
             // 
             this.chbAutoScroll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.chbAutoScroll.AutoSize = true;
-            this.chbAutoScroll.Location = new System.Drawing.Point(261, 0);
+            this.chbAutoScroll.Location = new System.Drawing.Point(249, 421);
             this.chbAutoScroll.Name = "chbAutoScroll";
             this.chbAutoScroll.Size = new System.Drawing.Size(74, 17);
             this.chbAutoScroll.TabIndex = 18;
@@ -213,8 +182,6 @@
             this.Controls.Add(this.chbDay);
             this.Controls.Add(this.chbMonth);
             this.Controls.Add(this.chbYear);
-            this.Controls.Add(this.btnExportCsv);
-            this.Controls.Add(this.btnSort);
             this.Controls.Add(this.lbCountry);
             this.Controls.Add(this.cbContinent);
             this.Controls.Add(this.cbDay);
@@ -237,8 +204,6 @@
         private System.Windows.Forms.ComboBox cbDay;
         private System.Windows.Forms.ComboBox cbContinent;
         private System.Windows.Forms.ListBox lbCountry;
-        private System.Windows.Forms.Button btnSort;
-        private System.Windows.Forms.Button btnExportCsv;
         private System.Windows.Forms.CheckBox chbYear;
         private System.Windows.Forms.CheckBox chbMonth;
         private System.Windows.Forms.CheckBox chbDay;

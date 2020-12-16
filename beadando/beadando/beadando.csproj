@@ -53,7 +53,7 @@
     <Compile Include="Entities\ExportCsvButton.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Entities\SortButton.cs">
+    <Compile Include="Entities\FilterButton.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Form1.cs">
